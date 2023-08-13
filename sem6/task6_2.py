@@ -1,14 +1,48 @@
 """
-Напишите однострочный генератор словаря, который принимает
-на вход три списка одинаковой длины: имена str, ставка int,
-премия str с указанием процентов вида «10.25%». В результате
-получаем словарь с именем в качестве ключа и суммой
-премии в качестве значения. Сумма рассчитывается
-как ставка умноженная на процент премии
+Создайте модуль и напишите в нём функцию,
+которая получает на вход дату в формате DD.MM.YYYY
+Функция возвращает истину, если дата может существовать или ложь, если такая дата невозможна.
+Для простоты договоримся, что год может быть в диапазоне [1, 9999].
+Весь период (1 января 1 года - 31 декабря 9999 года) действует
+Григорианский календарь.
+Проверку года на високосность вынести в отдельную защищённую функцию.
+Запуск в терминале с передачей даты на проверку!!!!!
 """
+from sys import argv
 
-names = ["semen", "stavk", "premi"]
-salary = [1000, 1500, 2000]
-bonus = ["10.15%", "9.25%", "10.50%"]
+def dat(st):
+    day, month, year = map(int, (st.split(".")))
 
-print({name: salary * (1 + float(bonus.strip('%')) / 100) for name, salary, bonus in zip(names, salary, bonus)})
+    if year in range(1, 10000) and month in range(1, 13) and day in range(1,
+                                                                          32):
+        if year % 400 == 0 or year % 4 == 0 and year % 100 != 0 and month == 2:
+            if day <= 29:
+                return True
+            else:
+                return False
+        if month in [1, 3, 5, 7, 8, 10, 12]:
+            if day <= 31:
+                return True
+            else:
+                return False
+        elif month == 2:
+            if day <= 28:
+                return True
+            else:
+                return False
+        else:
+            if day <= 30:
+                return True
+            else:
+                return False
+    else:
+        return False
+
+def _visokostnosn(year):
+    vis = ("Високосный" if year % 400 == 0 or year % 4 == 0 and year % 100 != 0 else "Невисокосный")
+    return vis
+
+"""обязательно ввести параметры"""
+
+print(dat(argv[1]))
+print(_visokostnosn(int(argv[1].split(".")[2])))
